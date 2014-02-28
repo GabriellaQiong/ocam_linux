@@ -19,9 +19,9 @@ This executable version mainly
 * Contain one run_script with no competitive clicking when using the original toolbox
 
 -----
-Installation and Implementation
+Installation
 -----
-* [autoCornerFinder]()
+* [autoCornerFinder](https://github.com/GabriellaQiong/ocam_linux/tree/master/autoCornerFinder)
 
 Please change the path in the  [Makefile]() to the one where installed OpenCV, e.g.
 
@@ -29,8 +29,14 @@ Please change the path in the  [Makefile]() to the one where installed OpenCV, e
 DEFINCS = -I/usr/local/include/opencv -I/usr/local/include/opencv2
 DEFLIBS = -L/usr/local/lib
 ```
+Then do the following commands in the terminal
 
-* [ocam_calib.m]()
+```
+make clean
+make
+```
+
+* [ocam_calib.m](https://raw.github.com/GabriellaQiong/ocam_linux/master/ocam_calib.m)
 
 In this script, one startup was added to change the libraray environment to the right one. The code is shown below
 
