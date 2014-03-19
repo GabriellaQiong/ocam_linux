@@ -28,7 +28,8 @@ if isempty(calib_data.ima_proc) | isempty(calib_data.Xp_abs)
     return;
 end
 
-calib_data.taylor_order = input(['\nDegree of polynomial expansion ([]=' num2str(calib_data.taylor_order_default) ') = ']); %4
+calib_data.taylor_order = 4;
+% calib_data.taylor_order = input(['\nDegree of polynomial expansion ([]=' num2str(calib_data.taylor_order_default) ') = ']); %4
 if isempty(calib_data.taylor_order), calib_data.taylor_order = calib_data.taylor_order_default; end;
 
 calib_data.ocam_model.c=1;
@@ -38,7 +39,7 @@ calib_data.ocam_model.e=0;
 calib_data.calibrated = 1; %This flag i s1 when the camera has been calibrated
 reprojectpoints(calib_data);
 ss = calib_data.ocam_model.ss;
-ss
+% ss
 
 figure(3);
 set(3,'Name','Calibration results','NumberTitle','off');

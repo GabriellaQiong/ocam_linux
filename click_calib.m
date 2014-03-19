@@ -18,7 +18,7 @@
 %   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 %   USA
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function click_calib(calib_data)
+function click_calib(calib_data, imgSz)
 
 %if isnan(calib_data.dX_default),    calib_data.dX_default = [];end;
 %if isnan(calib_data.dY_default),    calib_data.dY_default = [];end;
@@ -118,41 +118,41 @@ end;
 % end;
 
 
-if ~isempty(calib_data.ima_proc)
-    fprintf(1,'\nCurrently, corners have been extracted for the following image(s): %s\n',num2str(calib_data.ima_proc));
-    suppress_image = input('  Do you want to suppress the current image(s) ([] = no, other = yes)? ','s');
-    if isempty(suppress_image),
-        ima_numbers = input('Type a vector containing the Images to add (e.g. [1 2 3]) = ');
-        for i=ima_numbers
-            if ~isempty(find(calib_data.ima_proc==i)),
-                fprintf(1,'\nyou have already extracted corners from image %d',i);
-                replace_image = input(', are you sure you want to replace this image ([] = yes, other = no)?\n','s');                
-                if isempty(replace_image)
-                    calib_data.ima_proc=calib_data.ima_proc(find(calib_data.ima_proc~=i));
-                else
-                    ima_numbers(find(ima_numbers==i))=0;
-                end
-            end
-        end
-        ima_numbers= ima_numbers(find(ima_numbers~=0));
-    else
-        calib_data.ima_proc=[];
-        ima_numbers=[];
-        answer = input('\nType the images you want to process (e.g. [1 2 3], [] = all images) = ');
-        if isempty(answer)
-            ima_numbers = 1:calib_data.n_ima;
-        else
-            ima_numbers=answer;
-        end
-    end;
-else
-    answer=input('\nType the images you want to process (e.g. [1 2 3], [] = all images) = ');
-    if isempty(answer)
-        ima_numbers = 1:calib_data.n_ima;
-    else
-        ima_numbers=answer;
-    end
-end;
+% if ~isempty(calib_data.ima_proc)
+%     fprintf(1,'\nCurrently, corners have been extracted for the following image(s): %s\n',num2str(calib_data.ima_proc));
+%     suppress_image = input('  Do you want to suppress the current image(s) ([] = no, other = yes)? ','s');
+%     if isempty(suppress_image),
+%         ima_numbers = input('Type a vector containing the Images to add (e.g. [1 2 3]) = ');
+%         for i=ima_numbers
+%             if ~isempty(find(calib_data.ima_proc==i)),
+%                 fprintf(1,'\nyou have already extracted corners from image %d',i);
+%                 replace_image = input(', are you sure you want to replace this image ([] = yes, other = no)?\n','s');                
+%                 if isempty(replace_image)
+%                     calib_data.ima_proc=calib_data.ima_proc(find(calib_data.ima_proc~=i));
+%                 else
+%                     ima_numbers(find(ima_numbers==i))=0;
+%                 end
+%             end
+%         end
+%         ima_numbers= ima_numbers(find(ima_numbers~=0));
+%     else
+%         calib_data.ima_proc=[];
+% %         ima_numbers=[];
+% %         answer = input('\nType the images you want to process (e.g. [1 2 3], [] = all images) = ');
+% %         if isempty(answer)
+%         ima_numbers = 1:calib_data.n_ima;
+% %         else
+% %             ima_numbers=answer;
+% %         end
+%     end;
+% else
+% %     answer=input('\nType the images you want to process (e.g. [1 2 3], [] = all images) = ');
+% %     if isempty(answer)
+%       ima_numbers = 1:calib_data.n_ima;
+% %     else
+% %         ima_numbers=answer;
+% %     end
+% end;
 
 
 % TO DO!
@@ -167,7 +167,7 @@ end;
 % else
 %     manual_squares = 0;
 % end;
-manual_squares=1;
+manual_squares=0;
 
 if manual_squares,
     
@@ -177,6 +177,18 @@ if manual_squares,
     if isempty(calib_data.n_sq_y), calib_data.n_sq_y = n_sq_y_default; end; 
     
 end;
+
+% Added Params
+ima_numbers = 1:calib_data.n_ima;
+
+calib_data.n_sq_x = 6;
+calib_data.n_sq_y = 5;
+
+calib_data.dX = 108;
+calib_data.dY = 108;
+
+calib_data.ocam_model.xc = imgSz(1) / 2;
+calib_data.ocam_model.yc = imgSz(2) / 2;
 
 num_points=(calib_data.n_sq_x+1)*(calib_data.n_sq_y+1);
 
@@ -205,8 +217,8 @@ square_horiz_side=calib_data.dY; %mm
 num_vert_square=calib_data.n_sq_x;
 num_horiz_square=calib_data.n_sq_y;
 
-calib_data.ocam_model.xc=input(['X coordinate (along height) of the omnidirectional image center = ([]=' num2str(xc_default) ') = ']);    
-calib_data.ocam_model.yc=input(['Y coordinate (along width) of the omnidirectional image center = ([]=' num2str(yc_default) ') = ']);    
+% calib_data.ocam_model.xc=input(['X coordinate (along height) of the omnidirectional image center = ([]=' num2str(xc_default) ') = ']);    
+% calib_data.ocam_model.yc=input(['Y coordinate (along width) of the omnidirectional image center = ([]=' num2str(yc_default) ') = ']);    
 if isempty(calib_data.ocam_model.xc), calib_data.ocam_model.xc = xc_default; else xc_default = calib_data.ocam_model.xc; end;
 if isempty(calib_data.ocam_model.yc), calib_data.ocam_model.yc = yc_default; else yc_default = calib_data.ocam_model.yc; end;
 % xc=385.48;
@@ -214,45 +226,45 @@ if isempty(calib_data.ocam_model.yc), calib_data.ocam_model.yc = yc_default; els
 
 
 fprintf(1,'\nEXTRACTION OF THE GRID CORNERS\n');
-fprintf(1,'Do you want to use the automatic image selection\n');
-answer=input('or do you want to process the images individually ( [] = automatic, other = individual )? ','s');
+% fprintf(1,'Do you want to use the automatic image selection\n');
+% answer=input('or do you want to process the images individually ( [] = automatic, other = individual )? ','s');
 
-if isempty(answer)
+% if isempty(answer)
     use_video_mode = 1;
     use_corner_find = 0;
-else
-    use_video_mode = 0;
-    fprintf(1,'Do you want to use the automatic corner extraction\n');
-    answer=input('or do you want to extract all the points manually ( [] = automatic, other = manual )? ','s');
-    
-    % If you opted for the AUTOMATIC extraction
-    if isempty(answer)
-        use_automatic = 1;
-        use_corner_find=0;
-    else
-        use_automatic = 0;
-    end
-    
-    fprintf(1,'\n');
-    % If you opted for the MANUAL extraction
-    if use_automatic == 0 %IF manual Extraction
-        answer=input('Do you want your clicking to be assisted by a corner detector ( [] = yes, other = no )? ','s');
-        if isempty(answer)
-            use_corner_find=1;
-            disp('Window size for corner finder (wintx and winty): ');
-            calib_data.wintx = input(['wintx ([] = ' num2str(wintx_default) ') = ']);
-            if isempty(calib_data.wintx), calib_data.wintx = wintx_default; end;
-            calib_data.wintx = round(calib_data.wintx);
-            calib_data.winty = input(['winty ([] = ' num2str(winty_default) ') = ']);
-            if isempty(calib_data.winty), calib_data.winty = winty_default; end;
-            winty = round(calib_data.winty);
-            fprintf(1,'Window size = %dx%d\n',2*calib_data.wintx+1,2*calib_data.winty+1);
-            
-        else
-            use_corner_find=0;
-        end
-    end
-end
+% else
+%     use_video_mode = 0;
+%     fprintf(1,'Do you want to use the automatic corner extraction\n');
+%     answer=input('or do you want to extract all the points manually ( [] = automatic, other = manual )? ','s');
+%     
+%     % If you opted for the AUTOMATIC extraction
+%     if isempty(answer)
+%         use_automatic = 1;
+%         use_corner_find=0;
+%     else
+%         use_automatic = 0;
+%     end
+%     
+%     fprintf(1,'\n');
+%     % If you opted for the MANUAL extraction
+%     if use_automatic == 0 %IF manual Extraction
+%         answer=input('Do you want your clicking to be assisted by a corner detector ( [] = yes, other = no )? ','s');
+%         if isempty(answer)
+%             use_corner_find=1;
+%             disp('Window size for corner finder (wintx and winty): ');
+%             calib_data.wintx = input(['wintx ([] = ' num2str(wintx_default) ') = ']);
+%             if isempty(calib_data.wintx), calib_data.wintx = wintx_default; end;
+%             calib_data.wintx = round(calib_data.wintx);
+%             calib_data.winty = input(['winty ([] = ' num2str(winty_default) ') = ']);
+%             if isempty(calib_data.winty), calib_data.winty = winty_default; end;
+%             winty = round(calib_data.winty);
+%             fprintf(1,'Window size = %dx%d\n',2*calib_data.wintx+1,2*calib_data.winty+1);
+%             
+%         else
+%             use_corner_find=0;
+%         end
+%     end
+% end
 
 
 

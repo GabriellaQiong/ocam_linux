@@ -7,7 +7,7 @@ set_up_global;
 
 % l_ras = dir('*ras');
 % s_ras = size(l_ras,1);
-l_bmp = dir(fullfile(camDir));
+l_bmp = dir('*bmp');
 s_bmp = size(l_bmp,1);
 % l_tif = dir('*tif');
 % s_tif = size(l_tif,1);
@@ -31,16 +31,16 @@ end;
 
 % IF yes, display the directory content:
 
-% dir;
+dir;
 
 Nima_valid = 0;
 
 while (Nima_valid==0),
 
    fprintf(1,'\n');
-   calib_data.calib_name = ['camera' num2str(camIdx, '%02d') '_'];
+   calib_data.calib_name = ['camera' num2str(cams(camIdx), '%02d') '_'];
 %    calib_data.calib_name = input('Basename camera calibration images (without number nor suffix): ','s');
-   calib_data.format_image = 'jpg';
+   calib_data.format_image = 'bmp';
 % 	while calib_data.format_image == '0',
 %    	calib_data.format_image =  input('Image format: ([]=''r''=''ras'', ''b''=''bmp'', ''t''=''tif'', ''g''=''gif'', ''p''=''pgm'', ''j''=''jpg'', ''m''=''ppm'') ','s');		
 % 		if isempty(calib_data.format_image),
@@ -80,7 +80,7 @@ while (Nima_valid==0),
 %    end;
 
       
-   [Nima_valid] = check_directory(calib_data, camDir);
+   [Nima_valid] = check_directory(calib_data);
    
 end;
 
