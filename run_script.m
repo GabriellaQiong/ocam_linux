@@ -77,5 +77,5 @@ for camIdx = 1 : camNum
     exportData2TXT(calib_data, outputDir);
     
     % Undistort
-    undistort_ocam();
+    undistort_ocam(scriptDir, dataDir, outputDir);
 end
