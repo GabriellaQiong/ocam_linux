@@ -52,9 +52,12 @@ Note here the OpenCV path *'/usr/local/lib/'* was put before the MATLAB build-in
 -----
 Update Information
 -----
+
+The runscript version toolbox for one camera was tested on Ubuntu 12.04 Precise successfully(04/19/2014).
+
 The orignal clicking version toolbox was tested on Ubuntu 12.04 Precise successfully(02/26/2014).
 
-The easy implementation ***run_script*** is under progress...
+The implementation ***run_script*** for multi-camera array is under progress...
 
 -----
 Resources
