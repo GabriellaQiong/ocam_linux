@@ -27,13 +27,13 @@ addpath(genpath(scriptDir));
 %% Preprocessing
 start_up;        % Set the environment in Linux
 set_up_global;   % Prepare workspace variables
-preprocess_images(camDir, imgSz);
 
 %% Omni-directional Calibration
 for camIdx = 1 : camNum
     % Read Files
 %     camDir = fullfile(dataDir, ['camera', num2str(camIdx, '%02d')]);
     camDir = dataDir;
+%     preprocess_images(camDir, imgSz);
     data_calib(calib_data, camIdx, camDir);
     
     % Extract Corners

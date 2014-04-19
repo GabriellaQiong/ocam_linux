@@ -44,7 +44,7 @@ Yp_abs = 0;
 
 %Tell the automatic corner extractor, which image file to process
 fid = fopen('autoCornerFinder/pictures.txt','w');
-fprintf(fid,'/home/qiong/research/ocam/Scaramuzza_OCamCalib_v3.0_win/%s',calib_data.L{kk});
+fprintf(fid, calib_data.L{kk});
 fclose(fid);
 
 %Call the automatic corner extraction algorithm
