@@ -1,4 +1,4 @@
-function export_data(ocam_model)
+function export_data(ocam_model, outputDir)
 
 if ~isfield(ocam_model,'invpol') 
     width = ocam_model.width;
@@ -7,7 +7,7 @@ if ~isfield(ocam_model,'invpol')
     ocam_model.invpol = findinvpoly(ocam_model.ss,sqrt((width/2)^2+(height/2)^2));
 end
 
-fid = fopen('calib_results.txt', 'w');
+fid = fopen(fullfile(outputDir,'calib_results.txt'), 'w');
 
 fprintf(fid,'#polynomial coefficients for the DIRECT mapping function (ocam_model.ss in MATLAB). These are used by cam2world\n\n');
 

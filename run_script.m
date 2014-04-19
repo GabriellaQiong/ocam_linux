@@ -74,6 +74,8 @@ for camIdx = 1 : camNum
     saving_calib(calib_data, outputDir);
         
     % Export Data
-%     exportData2TXT(calib_data);
-
+    exportData2TXT(calib_data, outputDir);
+    
+    % Undistort
+    undistort_ocam();
 end
