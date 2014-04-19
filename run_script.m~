@@ -33,7 +33,7 @@ for camIdx = 1 : camNum
     % Read Files
 %     camDir = fullfile(dataDir, ['camera', num2str(camIdx, '%02d')]);
     camDir = dataDir;
-%     preprocess_images(camDir, imgSz);
+    preprocess_images(camDir, imgSz);
     data_calib(calib_data, camIdx, camDir);
     
 %     % Extract Corners

@@ -38,7 +38,8 @@ Nima_valid = 0;
 while (Nima_valid==0),
 
    fprintf(1,'\n');
-   calib_data.calib_name = ['camera' num2str(camIdx, '%02d') '_'];
+%    calib_data.calib_name = ['calib' num2str(camIdx, '%02d') '_'];
+   calib_data.calib_name = 'calib_';
 %    calib_data.calib_name = input('Basename camera calibration images (without number nor suffix): ','s');
    calib_data.format_image = 'jpg';
 % 	while calib_data.format_image == '0',
@@ -87,12 +88,12 @@ end;
 if (Nima_valid~=0),
     % Reading images:
     
-    ima_read_calib(calib_data); % may be launched from the toolbox itself
+    ima_read_calib(calib_data, camDir); % may be launched from the toolbox itself
     % Show all the calibration images:
     
     if ~isempty(calib_data.ind_read),
         
-        mosaic(calib_data, camDir);
+        mosaic(calib_data);
         
     end;
     

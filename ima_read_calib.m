@@ -1,11 +1,11 @@
-function ima_read_calib(calib_data)
+function ima_read_calib(calib_data, camDir)
 
 if isempty(calib_data.calib_name)|isempty(calib_data.format_image),
    data_calib(calib_data);
    return;
 end;
 
-[~,image_numbers,type_numbering,N_slots] = check_directory(calib_data);
+[~,image_numbers,type_numbering,N_slots] = check_directory(calib_data, camDir);
 
 if isempty(calib_data.n_ima),
    data_calib(calib_data);
@@ -51,7 +51,7 @@ while (i <= calib_data.n_ima), % & (~no_image_file),
       	number_ext = sprintf(['%.' num2str(N_slots) 'd'],image_numbers(i));
    	end;
    	
-      ima_name = [calib_data.calib_name  number_ext '.' calib_data.format_image];
+      ima_name = fullfile(camDir,[calib_data.calib_name  number_ext '.' calib_data.format_image]);
       calib_data.L{i} = ima_name;
       
       if i == calib_data.ind_active(1),

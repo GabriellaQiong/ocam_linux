@@ -5,7 +5,7 @@
 % (c) Jean-Yves Bouguet - Dec. 27th, 1999
 function [Nima_valid,image_numbers, type_numbering, N_slots] =  check_directory(calib_data, camDir)
 
-l = dir([fullfile(camDir, calib_data.calib_name), '*']);
+l = dir(fullfile(camDir, [calib_data.calib_name, '*']));
 
 Nl = size(l, 1);
 Nima_valid = 0;
