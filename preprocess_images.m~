@@ -6,7 +6,6 @@ dirCam  = dir(camDir);
 imgName = {dirCam(:).name}';
 imgName(ismember(imgName,{'.','..'})) = [];
 numImgs = length(imgName);
-temp    = fullfile(camDir, 'temp.jpg');
 
 if numImgs == str2double(imgName{end}(7 : end - 4))
     return;
@@ -14,10 +13,10 @@ end
 
 for imgIdx = 1 : numImgs
     fprintf('Processing frame #%d ...\n', imgIdx);
-    movefile(fullfile(camDir, char(imgName(imgIdx))), temp);
-    img = imresize(imread(temp), sz);
+    movefile(fullfile(camDir, char(imgName(imgIdx))), fullfile(camDir, 'temp.jpg'));
+    img = imresize(imread(fullfile(camDir, 'temp.jpg')), sz);
     imwrite(img, fullfile(camDir, sprintf('calib_%03d.jpg', imgIdx)));
-    delete(temp);
+    delete(fullfile(camDir, char(imgName(imgIdx))));
 end
 
 end
