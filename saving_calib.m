@@ -1,4 +1,4 @@
-function saving_calib(calib_data)
+function saving_calib(calib_data, outputDir)
 
 
 if isempty(calib_data.n_ima) | calib_data.calibrated==0,
@@ -8,7 +8,7 @@ end;
 
 check_active_images(calib_data);
 
-save_name = 'Omni_Calib_Results';
+save_name = fullfile(outputDir, 'Omni_Calib_Results');
 
 if exist([ save_name '.mat'])==2,
     disp('WARNING: File Omni_Calib_Results.mat already exists');
@@ -18,13 +18,13 @@ if exist([ save_name '.mat'])==2,
         while cont,
             pfn = pfn + 1;
             postfix = ['_old' num2str(pfn)];
-            save_name = [ 'Omni_Calib_Results' postfix];
+            save_name = fullfile(outputDir, [ 'Omni_Calib_Results' postfix]);
             cont = (exist([ save_name '.mat'])==2);
         end;
-        copyfile('Omni_Calib_Results.mat',[save_name '.mat']);
+        copyfile(fullfile(outputDir, 'Omni_Calib_Results.mat'),[save_name '.mat']);
         disp(['Copying the current Omni_Calib_Results.mat file to ' save_name '.mat']);
         if exist('Omni_Calib_Results.m')==2,
-            copyfile('Omni_Calib_Results.m',[save_name '.m']);
+            copyfile(fullfile(outputDir, 'Omni_Calib_Results.m'),[save_name '.m']);
             disp(['Copying the current Omni_Calib_Results.m file to ' save_name '.m']);
         end;
         cont_save = 1;
@@ -44,7 +44,7 @@ if cont_save,
         fprintf(1,['\nSaving calibration results under ' save_name '.mat, please wait ...\n']);  
     end;
     
-    save_name = 'Omni_Calib_Results';
+    save_name = fullfile(outputDir, 'Omni_Calib_Results');
     data_name = 'calib_data';
     string_save = ['save ' save_name ' ' data_name];
     eval(string_save);

@@ -1,1 +1,1 @@
-/home/qiong/ese650_data/final_project/calib_data/keyframes/calib_034.jpg
+/home/qiong/ese650_data/final_project/calib_data/keyframes/calib_033.jpg

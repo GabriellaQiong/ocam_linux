@@ -18,29 +18,28 @@ imgSz  = [480, 640];
 %% Path
 scriptDir = fileparts(mfilename('fullpath'));
 dataDir   = '/home/qiong/ese650_data/final_project/calib_data/keyframes';
-outputDir = fullfile(dataDir, '../../results');
+outputDir = fullfile(dataDir, '../results');
 if ~exist(outputDir, 'dir')
     mkdir(outputDir);
 end
 addpath(genpath(scriptDir));
 
 %% Preprocessing
-if input('Do you want load the existing data? [Yes = 1/ No = 0] ? ')
+if input('Do you want load the existing data? [Yes = 1/ No = 0] ?')
     % Load
-    loading_calib(outputDir);
+    loading_calib;
+    return;
 end
 
 start_up;        % Set the environment in Linux
 set_up_global;   % Prepare workspace variables
+preprocess_images(camDir, imgSz);
 
 %% Omni-directional Calibration
 for camIdx = 1 : camNum
-    % Preprocess files
+    % Read Files
 %     camDir = fullfile(dataDir, ['camera', num2str(camIdx, '%02d')]);
     camDir = dataDir;
-    preprocess_images(camDir, imgSz);
-    
-    % Read Files
     data_calib(calib_data, camIdx, camDir);
     
     % Extract Corners
@@ -71,7 +70,7 @@ for camIdx = 1 : camNum
     show_calib_results(calib_data);
     
     % Save
-    saving_calib(calib_data, outputDir);
+    saving_calib(calib_data);
         
     % Export Data
 %     exportData2TXT(calib_data);
