@@ -57,7 +57,7 @@ The runscript version toolbox for one camera was tested on Ubuntu 12.04 Precise 
 
 The orignal clicking version toolbox was tested on Ubuntu 12.04 Precise successfully(02/26/2014).
 
-The implementation ***run_script*** for multi-camera array is under progress...
+The implementation to find the intrinsic parameters for mono camera is under progress...
 
 -----
 Resources
