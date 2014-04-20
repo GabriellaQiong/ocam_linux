@@ -1,4 +1,4 @@
-% Run Script for rearrangin files
+% Run Script for omni-directional calibration
 % Written by Qiong Wang at University of Pennsylvania
 % 02/26/2014
 
@@ -26,7 +26,7 @@ addpath(genpath(scriptDir));
 
 %% Preprocessing
 if input('Do you want load the existing data? [Yes = 1/ No = 0] ? ')
-    % Load
+    % Load calibration result
     loading_calib(outputDir);
 end
 
