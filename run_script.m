@@ -8,9 +8,6 @@ close all;
 clc;
 
 %% Parameters
-% Flags
-verbose  = false;                             % Whether to show the details
-
 % Params
 camNum = 1;
 imgSz  = [480, 640];
@@ -30,7 +27,7 @@ if input('Do you want load the existing data? [Yes = 1/ No = 0] ? ')
     loading_calib(outputDir);
 end
 
-start_up;        % Set the environment in Linux
+startup;        % Set the environment in Linux
 set_up_global;   % Prepare workspace variables
 
 %% Omni-directional Calibration
@@ -41,7 +38,7 @@ for camIdx = 1 : camNum
     preprocess_images(camDir, imgSz);
     
     % Read Files
-    data_calib(calib_data, camIdx, camDir);
+    data_calib(calib_data, camDir);
     
     % Extract Corners
     click_calib(calib_data, imgSz);

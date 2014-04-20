@@ -72,13 +72,13 @@ end;
 
 
 if ~exist('dX_default')|~exist('dY_default');
-    dX_default = 30;
-    dY_default = 30;
+    dX_default = 108;
+    dY_default = 108;
 end;
 
 if ~exist('n_sq_x_default')|~exist('n_sq_y_default'),
-    n_sq_x_default = 10;
-    n_sq_y_default = 10;
+    n_sq_x_default = 6;
+    n_sq_y_default = 5;
 end;
 
 if ~exist('wintx_default')|~exist('winty_default'),

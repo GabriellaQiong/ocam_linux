@@ -1,5 +1,5 @@
 %%% This function lets the user enter the name of the images (base name, numbering scheme,...
-function data_calib(calib_data, camIdx, camDir)
+function data_calib(calib_data, camDir)
 
 %clear all;
 set_up_global;
