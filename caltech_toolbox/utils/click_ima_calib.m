@@ -54,30 +54,31 @@ figure(2); hold on;
 
 % [Xc,good,bad,type] = cornerfinder([x';y'],I,winty,wintx); % the four corners
 
-Xc = cv.findChessboardCorners(uint8(I), [6, 7]);
+Xc = cv.findChessboardCorners(uint8(I), [n_sq_y + 1, n_sq_x + 1]);
+if isempty(Xc), display('no corners found'); continue; end %#ok<CONT>
 out = cv.drawChessboardCorners(repmat(uint8(I),[1 1 3]), [6,7], Xc);
 figure(2); imshow(out);
 Xc_ = cell2mat(Xc');
 x = Xc_(:, 1);
 y = Xc_(:, 2);
 
-% Sort the corners:
-x_mean = mean(x);
-y_mean = mean(y);
-x_v = x - x_mean;
-y_v = y - y_mean;
-
-theta = atan2(-y_v,x_v);
-[junk,ind] = sort(theta);
-
-[junk,ind] = sort(mod(theta-theta(1),2*pi));
+% % Sort the corners:
+% x_mean = mean(x);
+% y_mean = mean(y);
+% x_v = x - x_mean;
+% y_v = y - y_mean;
+% 
+% theta = atan2(-y_v,x_v);
+% [junk,ind] = sort(theta);
+% 
+% [junk,ind] = sort(mod(theta-theta(1),2*pi));
 
 %ind = ind([2 3 4 1]);
 
 % ind = ind([4 3 2 1]); %-> New: the Z axis is pointing uppward
 
-x = x(ind);
-y = y(ind);
+% x = x(ind);
+% y = y(ind);
 % x1= x_(1); x2 = x_(2); x3 = x_(3); x4 = x_(4);
 % y1= y_(1); y2 = y_(2); y3 = y_(3); y4 = y_(4);
 % 
@@ -162,10 +163,9 @@ y = y(ind);
 %     
 % end;
 
-
-n_sq_x_default = n_sq_x;
-n_sq_y_default = n_sq_y;
-
+% 
+% n_sq_x_default = n_sq_x;
+% n_sq_y_default = n_sq_y;
 
 if (exist('dX')~=1)|(exist('dY')~=1), % This question is now asked only once
     % Enter the size of each square
@@ -191,9 +191,9 @@ end;
 % Compute the inside points through computation of the planar homography (collineation)
 
 a00 = [x(1);y(1);1];
-a10 = [x(2);y(2);1];
-a11 = [x(3);y(3);1];
-a01 = [x(4);y(4);1];
+a10 = [x(n_sq_x);y(n_sq_x);1];
+a11 = [x(n_sq_x * (n_sq_y - 1) + 1);y(n_sq_x * (n_sq_y - 1) + 1);1];
+a01 = [x(end);y(end);1];
 
 
 % Compute the planar collineation: (return the normalization matrix as well)
@@ -219,76 +219,76 @@ L = n_sq_y*dY;
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%% ADDITIONAL STUFF IN THE CASE OF HIGHLY DISTORTED IMAGES %%%%%%%%%%%%%
-figure(2);
-hold on;
-plot(XX(1,:),XX(2,:),'r+');
-title('The red crosses should be close to the image corners');
-hold off;
+% %%%%%%%%%%%%%%%%%%%%%%%% ADDITIONAL STUFF IN THE CASE OF HIGHLY DISTORTED IMAGES %%%%%%%%%%%%%
+% figure(2);
+% hold on;
+% plot(XX(1,:),XX(2,:),'r+');
+% title('The red crosses should be close to the image corners');
+% hold off;
+% 
+% disp('If the guessed grid corners (red crosses on the image) are not close to the actual corners,');
+% disp('it is necessary to enter an initial guess for the radial distortion factor kc (useful for subpixel detection)');
+% quest_distort = input('Need of an initial guess for distortion? ([]=no, other=yes) ');
+% 
+% quest_distort = ~isempty(quest_distort);
+% 
+% if quest_distort,
+%     % Estimation of focal length:
+%     c_g = [size(I,2);size(I,1)]/2 + .5;
+%     f_g = Distor2Calib(0,[[x(1) x(2) x(4) x(3)] - c_g(1);[y(1) y(2) y(4) y(3)] - c_g(2)],1,1,4,W,L,[-W/2 W/2 W/2 -W/2;L/2 L/2 -L/2 -L/2; 0 0 0 0],100,1,1);
+%     f_g = mean(f_g);
+%     script_fit_distortion;
+% end;
+% %%%%%%%%%%%%%%%%%%%%% END ADDITIONAL STUFF IN THE CASE OF HIGHLY DISTORTED IMAGES %%%%%%%%%%%%%
+% 
 
-disp('If the guessed grid corners (red crosses on the image) are not close to the actual corners,');
-disp('it is necessary to enter an initial guess for the radial distortion factor kc (useful for subpixel detection)');
-quest_distort = input('Need of an initial guess for distortion? ([]=no, other=yes) ');
-
-quest_distort = ~isempty(quest_distort);
-
-if quest_distort,
-    % Estimation of focal length:
-    c_g = [size(I,2);size(I,1)]/2 + .5;
-    f_g = Distor2Calib(0,[[x(1) x(2) x(4) x(3)] - c_g(1);[y(1) y(2) y(4) y(3)] - c_g(2)],1,1,4,W,L,[-W/2 W/2 W/2 -W/2;L/2 L/2 -L/2 -L/2; 0 0 0 0],100,1,1);
-    f_g = mean(f_g);
-    script_fit_distortion;
-end;
-%%%%%%%%%%%%%%%%%%%%% END ADDITIONAL STUFF IN THE CASE OF HIGHLY DISTORTED IMAGES %%%%%%%%%%%%%
-
-
-
-
-
+% 
+% 
+% 
 Np = (n_sq_x+1)*(n_sq_y+1);
-
-disp('Corner extraction...');
-
-grid_pts = cornerfinder(XX,I,winty,wintx); %%% Finds the exact corners at every points!
-
-
-
-%save all_corners x y grid_pts
-
-grid_pts = grid_pts - 1; % subtract 1 to bring the origin to (0,0) instead of (1,1) in matlab (not necessary in C)
-
-
-
-ind_corners = [1 n_sq_x+1 (n_sq_x+1)*n_sq_y+1 (n_sq_x+1)*(n_sq_y+1)]; % index of the 4 corners
-ind_orig = (n_sq_x+1)*n_sq_y + 1;
-xorig = grid_pts(1,ind_orig);
-yorig = grid_pts(2,ind_orig);
-dxpos = mean([grid_pts(:,ind_orig) grid_pts(:,ind_orig+1)]');
-dypos = mean([grid_pts(:,ind_orig) grid_pts(:,ind_orig-n_sq_x-1)]');
-
-
-x_box_kk = [grid_pts(1,:)-(wintx+.5);grid_pts(1,:)+(wintx+.5);grid_pts(1,:)+(wintx+.5);grid_pts(1,:)-(wintx+.5);grid_pts(1,:)-(wintx+.5)];
-y_box_kk = [grid_pts(2,:)-(winty+.5);grid_pts(2,:)-(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)-(winty+.5)];
-
-
-figure(3);
-image(I); colormap(map); hold on;
-plot(grid_pts(1,:)+1,grid_pts(2,:)+1,'r+');
-plot(x_box_kk+1,y_box_kk+1,'-b');
-plot(grid_pts(1,ind_corners)+1,grid_pts(2,ind_corners)+1,'mo');
-plot(xorig+1,yorig+1,'*m');
-h = text(xorig+delta*vO(1),yorig+delta*vO(2),'O');
-set(h,'Color','m','FontSize',14);
-h2 = text(dxpos(1)+delta*vX(1),dxpos(2)+delta*vX(2),'dX');
-set(h2,'Color','g','FontSize',14);
-h3 = text(dypos(1)+delta*vY(1),dypos(2)+delta*vY(2),'dY');
-set(h3,'Color','g','FontSize',14);
-xlabel('Xc (in camera frame)');
-ylabel('Yc (in camera frame)');
-title('Extracted corners');
-zoom on;
-drawnow;
-hold off;
+% 
+% disp('Corner extraction...');
+% 
+% grid_pts = cornerfinder(XX,I,winty,wintx); %%% Finds the exact corners at every points!
+% 
+% 
+% 
+% %save all_corners x y grid_pts
+% 
+% grid_pts = grid_pts - 1; % subtract 1 to bring the origin to (0,0) instead of (1,1) in matlab (not necessary in C)
+% 
+% 
+% 
+% ind_corners = [1 n_sq_x+1 (n_sq_x+1)*n_sq_y+1 (n_sq_x+1)*(n_sq_y+1)]; % index of the 4 corners
+% ind_orig = (n_sq_x+1)*n_sq_y + 1;
+% xorig = grid_pts(1,ind_orig);
+% yorig = grid_pts(2,ind_orig);
+% dxpos = mean([grid_pts(:,ind_orig) grid_pts(:,ind_orig+1)]');
+% dypos = mean([grid_pts(:,ind_orig) grid_pts(:,ind_orig-n_sq_x-1)]');
+% 
+% 
+% x_box_kk = [grid_pts(1,:)-(wintx+.5);grid_pts(1,:)+(wintx+.5);grid_pts(1,:)+(wintx+.5);grid_pts(1,:)-(wintx+.5);grid_pts(1,:)-(wintx+.5)];
+% y_box_kk = [grid_pts(2,:)-(winty+.5);grid_pts(2,:)-(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)+(winty+.5);grid_pts(2,:)-(winty+.5)];
+% 
+% 
+% figure(3);
+% image(I); colormap(map); hold on;
+% plot(grid_pts(1,:)+1,grid_pts(2,:)+1,'r+');
+% plot(x_box_kk+1,y_box_kk+1,'-b');
+% plot(grid_pts(1,ind_corners)+1,grid_pts(2,ind_corners)+1,'mo');
+% plot(xorig+1,yorig+1,'*m');
+% h = text(xorig+delta*vO(1),yorig+delta*vO(2),'O');
+% set(h,'Color','m','FontSize',14);
+% h2 = text(dxpos(1)+delta*vX(1),dxpos(2)+delta*vX(2),'dX');
+% set(h2,'Color','g','FontSize',14);
+% h3 = text(dypos(1)+delta*vY(1),dypos(2)+delta*vY(2),'dY');
+% set(h3,'Color','g','FontSize',14);
+% xlabel('Xc (in camera frame)');
+% ylabel('Yc (in camera frame)');
+% title('Extracted corners');
+% zoom on;
+% drawnow;
+% hold off;
 
 
 Xi = reshape(([0:n_sq_x]*dX)'*ones(1,n_sq_y+1),Np,1)';
@@ -299,8 +299,8 @@ Xgrid = [Xi;Yi;Zi];
 
 
 % All the point coordinates (on the image, and in 3D) - for global optimization:
-
-x = grid_pts;
+grid_pts = Xc_;
+x = grid_pts';
 X = Xgrid;
 
 

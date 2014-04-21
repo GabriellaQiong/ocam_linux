@@ -155,6 +155,10 @@ end;
     manual_squares = 0;
 % end;
 
+n_sq_x = 6;
+n_sq_y = 5;
+dX = 108;
+dY = 108;
 
 for kk = ima_proc,
     if exist(['I_' num2str(kk)]),
@@ -203,17 +207,12 @@ for kk = 1:n_ima,
 end;
 
 % ima_numbers = 1:n_ima;
-n_sq_x = 6;
-n_sq_y = 5;
-dX = 108;
-dY = 108;
-
 % num_points=(n_sq_x+1)*(n_sq_y+1);
 
 n_sq_x_default = n_sq_x;
 n_sq_y_default = n_sq_y;
 
-string_save = 'save calib_data active_images ind_active wintx winty n_ima type_numbering N_slots first_num image_numbers format_image calib_name Hcal Wcal nx ny map dX_default dY_default dX dY wintx_default winty_default';
+string_save = ['save ', fullfile(outputDir, 'calib_data'), ' active_images ind_active wintx winty n_ima type_numbering N_slots first_num image_numbers format_image calib_name Hcal Wcal nx ny map dX_default dY_default dX dY wintx_default winty_default'];
 
 for kk = 1:n_ima,
     string_save = [string_save ' X_' num2str(kk) ' x_' num2str(kk) ' n_sq_x_' num2str(kk) ' n_sq_y_' num2str(kk) ' wintx_' num2str(kk) ' winty_' num2str(kk) ' dX_' num2str(kk) ' dY_' num2str(kk)];

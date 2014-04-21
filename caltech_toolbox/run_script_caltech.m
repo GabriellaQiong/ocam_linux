@@ -14,13 +14,13 @@ imgSz  = [480, 640];
 
 %% Path
 scriptDir = fileparts(mfilename('fullpath'));
-dataDir   = '/home/qiong/ese650_data/final_project/calib_data/keyframes';
+dataDir   = '/home/qiong/ese650_data/final_project/results/undistorted';
 outputDir = fullfile(dataDir, '../');
 if ~exist(outputDir, 'dir')
     mkdir(outputDir);
 end
 addpath(genpath([scriptDir, '../']));
-cd('..')
+cd(fullfile(scriptDir, '../'));
 
 %% Preprocessing
 % if input('Do you want load the existing data? [Yes = 1/ No = 0] ? ')
@@ -43,7 +43,7 @@ for camIdx = 1 : camNum
     
     % Calibration
     go_calib_optim;
-    return;
+    
     % Calibration Refinement
     ext_calib;
     

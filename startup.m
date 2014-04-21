@@ -12,3 +12,4 @@ for i = 1 : numel(files)
     files{i} = [files{i}, '/*~'];
 end
 cellfun(@delete, files);
+clear *_path files;
