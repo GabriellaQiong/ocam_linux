@@ -64,6 +64,8 @@ Resources
 -----
 Original Toolbox from Davide Scaramuzza: https://sites.google.com/site/scarabotix/ocamcalib-toolbox
 
+Collection and a development kit of matlab mex functions for OpenCV library from Kota Yamaguchi: http://www.cs.stonybrook.edu/~kyamagu/mexopencv/
+
 -----
 License
 -----
