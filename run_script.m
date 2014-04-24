@@ -20,6 +20,7 @@ if ~exist(outputDir, 'dir')
     mkdir(outputDir);
 end
 addpath(genpath(scriptDir));
+rmpath(genpath(fullfile(scriptDir, 'caltech_toolbox')));
 
 %% Preprocessing
 if input('Do you want load the existing data? [Yes = 1/ No = 0] ? ')
@@ -38,8 +39,8 @@ for camIdx = 1 : camNum
     preprocess_images(camDir, imgSz);
     
     % Read Files
-    data_calib(calib_data, camDir);
-    
+data_calib(calib_data, camDir);
+    return;
     % Extract Corners
     click_calib(calib_data, imgSz);
     
